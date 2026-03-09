@@ -26,6 +26,12 @@ If the scope is broad, break it into batches such as:
 - previously organized result folders
 - cloud-synced folders
 
+Do not silently narrow execution from the user-stated scope to a smaller "safe subset" and then apply moves.
+If you believe only a subset is safe to act on now:
+- inventory the broader scope
+- propose the exact subset you want to execute
+- ask for confirmation before any move or rename in that subset
+
 Exclude high-risk areas unless the user explicitly includes them:
 - operating-system directories
 - installed runtime or application directories
@@ -46,6 +52,13 @@ Default bundled tooling in this skill:
 - `python scripts/inventory_paths.py` for inventory
 - `powershell -ExecutionPolicy Bypass -File scripts/audit_shortcuts.ps1` for desktop shortcut audit
 - `python scripts/find_duplicate_candidates.py` for duplicate preview
+
+Before the first move, explicitly decide and state the destination layout:
+- organize in place
+- move into an existing result root
+- create a new result root
+
+If the destination layout introduces a new top-level bucket or materially changes the directory shape, preview it and get confirmation before moving files.
 
 Optional external wheels already curated in this skill:
 - `Everything` for fast interactive inventory and triage on Windows
@@ -94,6 +107,10 @@ Read only enough content to make a reliable decision:
 
 If `doc`, `pdf`, or `spreadsheet` skills are available in the session, use them for the content-reading step.
 
+Do not invent a more specific semantic rename than the evidence supports.
+If a rename introduces a subject, unit, or theme that is not already obvious from strong folder context or sampled content, sample content first.
+Only use filename-only evidence for clearly non-sensitive, high-confidence cases such as obvious media series folders or disposable download-package names.
+
 ### Step 6: Classify with a fixed dictionary
 Use [references/classification-dictionary.md](references/classification-dictionary.md) as the source of truth.
 
@@ -131,9 +148,14 @@ Always record:
 - confidence
 - skipped reason if not moved
 
+If this is only a preview pass, inventory pass, or low-risk pilot batch, label it exactly that way.
+Do not describe a limited pilot as if the requested scope has already been organized.
+
 ### Step 9: Add user confirmation at key decision points
 Ask for confirmation when any of these applies:
 - the scope was not explicitly defined by the user
+- you want to execute only one batch or one safe subset from a broader user-confirmed scope
+- you want to introduce a new result root or a new top-level destination layout
 - duplicate handling could delete, merge, or overwrite files
 - a move would affect portable apps, code projects, runtimes, or cloud-synced folders
 - a move would affect the target of a desktop shortcut
@@ -152,6 +174,12 @@ Stop and switch to `manual-review` when:
 - moving the directory could break an installed runtime or application
 - moving a target would likely break or orphan an existing shortcut
 - collisions are too dense to resolve safely in one pass
+
+## Execution contract
+- Inventory may cover a broader scope than the current apply batch, but apply scope must be explicitly stated.
+- A batch is not "done" unless its apply scope matches what was confirmed with the user.
+- If you only completed a pilot batch, say "pilot batch" or "preview batch" in the final answer.
+- Do not claim the skill was fully followed if content sampling, confirmation gates, or destination-layout confirmation were skipped.
 
 ## Trigger examples
 Use this skill for prompts like:
