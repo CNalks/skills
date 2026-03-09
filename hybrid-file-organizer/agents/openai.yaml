@@ -1,0 +1,4 @@
+interface:
+  display_name: "文件整理助手"
+  short_description: "混合式文件整理与归档工作流，先盘点再抽样读内容，最后中文命名和归类。"
+  default_prompt: "Use $hybrid-file-organizer to inventory user files, classify them with a predefined dictionary, and rename and move them safely."
