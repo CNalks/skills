@@ -1,12 +1,12 @@
 ---
 name: hybrid-file-organizer
-description: Organize user files with a hybrid workflow that combines path and size inventory with targeted content reading, Chinese renaming, and category-based moves. Use when the user asks to scan, sort, rename, archive, deduplicate, or clean personal files or folders, especially mixed document collections, chat attachment folders, download buckets, portable apps, code folders, or previously half-organized archives.
+description: Organize user files with a hybrid workflow that combines path and size inventory with targeted content reading, Chinese renaming, category-based moves, duplicate review, and high-risk confirmation gates. Use when the user asks to scan, sort, rename, archive, deduplicate, or clean personal files or folders, especially mixed document collections, chat attachment folders, download buckets, portable apps, code folders, desktop-like roots, or previously half-organized archives.
 ---
 
 # Hybrid File Organizer
 
 ## Overview
-Use this skill to organize user files safely with a fixed sequence: inventory first, read representative content second, classify with a predefined dictionary, then rename and move with Chinese-friendly names.  
+Use this skill to organize user files safely with a fixed sequence: confirm scope, define stages, audit risky path types, inventory first, read representative content second, classify with a predefined dictionary, then rename and move with Chinese-friendly names.  
 Treat paths as signals, not verdicts. Use content to confirm classification before final moves.
 
 ## Workflow
@@ -16,7 +16,7 @@ Do not assume the scope. Use the user-provided scope as the source of truth.
 
 If the user has not clearly defined the scope:
 - propose a candidate scope
-- state any important inclusions or exclusions
+- state important inclusions or exclusions
 - ask for confirmation before scanning broadly
 
 If the scope is broad, break it into batches such as:
@@ -32,7 +32,23 @@ Exclude high-risk areas unless the user explicitly includes them:
 - cloud-sync roots
 - cache-only directories
 
-### Step 2: Inventory before reading content
+### Step 2: Design the execution plan before choosing tools
+Break the job into explicit stages before selecting any wheel or script.
+
+Use [references/tooling-and-path-strategy.md](references/tooling-and-path-strategy.md) to decide:
+- which stages need only inventory
+- which stages need content reading
+- which stages need shortcut auditing
+- which stages can use an existing tool
+- which stages need a custom script or a modified tool
+
+Prefer this order:
+1. define the stage
+2. look for a stable existing tool
+3. adapt the tool if needed
+4. write a custom script only if the tool gap is real
+
+### Step 3: Inventory before reading content
 Run `python scripts/inventory_paths.py <path>...` on candidate roots before making any classification decisions.
 
 Use the inventory to capture:
@@ -45,7 +61,24 @@ Use the inventory to capture:
 
 Use this data to decide which directories deserve content sampling. Do not classify solely from the path.
 
-### Step 3: Sample content from candidate files
+### Step 4: Audit special path types before moves
+Use [references/tooling-and-path-strategy.md](references/tooling-and-path-strategy.md) for path-type handling.
+
+Special attention is required for:
+- desktop-like roots with `.lnk` or `.url` files
+- cloud-synced roots
+- chat attachment roots
+- code project roots
+- portable app roots
+- runtime or install roots
+
+If a desktop-like root is in scope:
+- inventory `.lnk` and `.url` files first
+- identify whether their targets live inside the planned move scope
+- avoid moving targets until the shortcut impact is understood
+- keep shortcuts themselves in place unless the user explicitly asks otherwise
+
+### Step 5: Sample content from candidate files
 Read only enough content to make a reliable decision:
 - `docx`: title, first sections, key headings, first table
 - `pdf`: first page, first two pages, fallback to filename when extraction is poor
@@ -55,7 +88,7 @@ Read only enough content to make a reliable decision:
 
 If `doc`, `pdf`, or `spreadsheet` skills are available in the session, use them for the content-reading step.
 
-### Step 4: Classify with a fixed dictionary
+### Step 6: Classify with a fixed dictionary
 Use [references/classification-dictionary.md](references/classification-dictionary.md) as the source of truth.
 
 Apply these rules:
@@ -65,7 +98,7 @@ Apply these rules:
 - preserve project and folder integrity when a directory is clearly single-theme
 - do not overfit categories to one machine, one drive, or one app
 
-### Step 5: Rename in Chinese before moving
+### Step 7: Rename before moving
 Use [references/operating-procedure.md](references/operating-procedure.md) for naming rules.
 
 Default naming pattern:
@@ -79,10 +112,10 @@ Rename with these priorities:
 1. extract the real subject
 2. add date, unit, phase, or version if it reduces ambiguity
 3. remove download noise, hashes, repeated brackets, and meaningless numbers
-4. prefer Chinese names
+4. prefer Chinese-friendly names when the user wants Chinese naming
 5. only add `_1`, `_2` after content-based disambiguation fails
 
-### Step 6: Move and log
+### Step 8: Move and log
 Move only after classification and renaming are set.
 
 Always record:
@@ -92,11 +125,12 @@ Always record:
 - confidence
 - skipped reason if not moved
 
-### Step 7: Add user confirmation at key decision points
+### Step 9: Add user confirmation at key decision points
 Ask for confirmation when any of these applies:
 - the scope was not explicitly defined by the user
 - duplicate handling could delete, merge, or overwrite files
 - a move would affect portable apps, code projects, runtimes, or cloud-synced folders
+- a move would affect the target of a desktop shortcut
 - the operation is large enough that rollback would be expensive
 - sensitive material is present
 
@@ -104,12 +138,13 @@ Prefer a two-phase pattern for risky work:
 1. inventory and preview
 2. apply after confirmation
 
-### Step 8: Stop automation when risk is high
+### Step 10: Stop automation when risk is high
 Stop and switch to `manual-review` when:
 - a folder mixes work, research, personal, and finance content
 - files contain sensitive identity data, contracts, or reimbursement originals
 - extraction fails and the filename is too weak to trust
 - moving the directory could break an installed runtime or application
+- moving a target would likely break or orphan an existing shortcut
 - collisions are too dense to resolve safely in one pass
 
 ## Trigger examples
@@ -119,10 +154,12 @@ Use this skill for prompts like:
 - "Rename and move mixed files based on file content"
 - "Inventory paths and sizes first, then read content before classifying"
 - "Review duplicates and confirm before risky moves"
+- "Audit desktop shortcuts before reorganizing files"
 
 ## References
-- Read [references/classification-dictionary.md](references/classification-dictionary.md) for categories, fixed scan roots, WeChat and Tencent rules, and confidence guidance.
-- Read [references/operating-procedure.md](references/operating-procedure.md) for the full SOP, renaming rules, logging, and completion criteria.
+- Read [references/classification-dictionary.md](references/classification-dictionary.md) for categories, special path types, chat attachment rules, and confidence guidance.
+- Read [references/operating-procedure.md](references/operating-procedure.md) for the full SOP, renaming rules, logging, duplicate handling, and completion criteria.
+- Read [references/tooling-and-path-strategy.md](references/tooling-and-path-strategy.md) for shortcut auditing, wheel selection, and future cross-platform extension notes.
 
 ## Script
 - Run `python scripts/inventory_paths.py <path>...` to generate a compact inventory before doing any content reads or file moves.
