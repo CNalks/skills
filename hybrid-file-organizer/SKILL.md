@@ -42,11 +42,16 @@ Use [references/tooling-and-path-strategy.md](references/tooling-and-path-strate
 - which stages can use an existing tool
 - which stages need a custom script or a modified tool
 
-Prefer this order:
-1. define the stage
-2. look for a stable existing tool
-3. adapt the tool if needed
-4. write a custom script only if the tool gap is real
+Default bundled tooling in this skill:
+- `python scripts/inventory_paths.py` for inventory
+- `powershell -ExecutionPolicy Bypass -File scripts/audit_shortcuts.ps1` for desktop shortcut audit
+- `python scripts/find_duplicate_candidates.py` for duplicate preview
+
+Optional external wheels already curated in this skill:
+- `Everything` for fast interactive inventory and triage on Windows
+- `File Juggler` for stable content-based inbox automation on Windows
+- `DropIt` for stable rule-based move or rename pipelines on Windows
+- `pylnk3` or `LnkParse3` only when deeper `.lnk` parsing is needed beyond the bundled shortcut audit
 
 ### Step 3: Inventory before reading content
 Run `python scripts/inventory_paths.py <path>...` on candidate roots before making any classification decisions.
@@ -74,6 +79,7 @@ Special attention is required for:
 
 If a desktop-like root is in scope:
 - inventory `.lnk` and `.url` files first
+- run `powershell -ExecutionPolicy Bypass -File scripts/audit_shortcuts.ps1 -Roots <desktop-root> -MoveScopeRoots <planned-move-roots>`
 - identify whether their targets live inside the planned move scope
 - avoid moving targets until the shortcut impact is understood
 - keep shortcuts themselves in place unless the user explicitly asks otherwise
@@ -163,3 +169,5 @@ Use this skill for prompts like:
 
 ## Script
 - Run `python scripts/inventory_paths.py <path>...` to generate a compact inventory before doing any content reads or file moves.
+- Run `powershell -ExecutionPolicy Bypass -File scripts/audit_shortcuts.ps1 -Roots <path> -MoveScopeRoots <path>...` to audit `.lnk` and `.url` dependencies before moving targets.
+- Run `python scripts/find_duplicate_candidates.py <path>...` to preview duplicate candidates before any merge, overwrite, or delete decision.
