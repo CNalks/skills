@@ -19,9 +19,74 @@ Common high-priority user-file areas, when included by the user:
 Use path, size, and extension distribution to decide what to inspect.  
 Use file content, titles, headers, README files, and nearby context to decide the final category.
 
+## Special path-type strategy
+
+### Desktop-like roots
+Examples:
+- Desktop
+- pinned work areas that behave like a user launch surface
+
+Handling rule:
+- audit `.lnk` and `.url` files before moving nearby targets
+- preserve shortcuts by default
+- treat shortcut targets as dependency edges, not ordinary files
+
+### Cloud-sync roots
+Examples:
+- OneDrive
+- Dropbox
+- iCloud Drive
+- synced team folders
+
+Handling rule:
+- high-risk by default
+- do not move content across the sync boundary without explicit confirmation
+- preserve folder structure when the sync model depends on path stability
+
+### Chat attachment roots
+Examples:
+- WeChat attachment storage
+- Tencent or QQ received-file areas
+- Telegram export or attachment buckets
+
+Handling rule:
+- prioritize true received-file or attachment areas before caches
+- treat image pools and media caches as lower-priority unless the user includes them
+
+### Code project roots
+Examples:
+- source repositories
+- experiment folders
+- script bundles
+
+Handling rule:
+- prefer folder-level moves
+- avoid splitting projects into flat file buckets
+- preserve configuration, dependency files, and relative layout
+
+### Portable app roots
+Examples:
+- green software
+- unpacked app folders
+- self-contained tool bundles
+
+Handling rule:
+- audit launchers, config files, data directories, and shortcut targets first
+- prefer moving the whole app directory as a unit
+
+### Runtime or install roots
+Examples:
+- Python runtimes
+- Java runtimes
+- application install directories
+
+Handling rule:
+- exclude by default
+- only touch them when the user explicitly asks and accepts the risk
+
 ## Level-1 categories
 
-### 工作资料
+### Work Materials
 Include:
 - monitoring reports
 - disease control work files
@@ -29,25 +94,16 @@ Include:
 - business project materials
 - operational spreadsheets and tracking files
 
-Typical signals:
-- `监测`
-- `流调`
-- `防控`
-- `疾控`
-- `工作方案`
-- `项目建设方案`
-- `通报`
-
 Suggested subcategories:
-- `系统项目`
-- `工作专题`
-- `监测数据`
-- `监测周报与通报`
-- `疫情研判与防控`
-- `培训与汇报材料`
-- `校园卫生与学校防控`
+- system-projects
+- work-topics
+- monitoring-data
+- monitoring-briefs
+- prevention-and-control
+- training-and-briefing
+- school-health
 
-### 科研资料
+### Research Materials
 Include:
 - papers
 - modeling work
@@ -55,22 +111,13 @@ Include:
 - analysis outputs
 - study data and appendices
 
-Typical signals:
-- `研究`
-- `流行病学`
-- `趋势预测`
-- `模型`
-- `神经网络`
-- `appendix`
-- `supplementary`
-
 Suggested subcategories:
-- `研究代码`
-- `研究数据`
-- `研究报告`
-- `科研文献`
+- research-code
+- research-data
+- research-reports
+- research-literature
 
-### 学习考试
+### Study and Exams
 Include:
 - exam prep
 - training content
@@ -78,18 +125,11 @@ Include:
 - question practice
 - interview prep
 
-Typical signals:
-- `面试`
-- `练习题`
-- `课程`
-- `讲义`
-- `训练`
-
 Suggested subcategories:
-- `专题资料`
-- `培训与备考资料`
+- topic-materials
+- training-and-prep
 
-### 行政材料
+### Administrative Materials
 Include:
 - recruitment materials
 - application forms
@@ -97,20 +137,12 @@ Include:
 - HR paperwork
 - identity-related filing materials
 
-Typical signals:
-- `招聘`
-- `岗位表`
-- `报名`
-- `审批`
-- `证明`
-- `政审`
-
 Suggested subcategories:
-- `招聘考试资料`
-- `报名与审批材料`
-- `简历与个人材料`
+- recruitment
+- approvals
+- personal-materials
 
-### 经费财务
+### Finance Materials
 Include:
 - budgets
 - reimbursements
@@ -118,20 +150,12 @@ Include:
 - department settlement documents
 - fund allocation sheets
 
-Typical signals:
-- `经费`
-- `预算`
-- `绩效`
-- `决算`
-- `发票`
-- `中央转移支付`
-
 Suggested subcategories:
-- `绩效与经费`
-- `报销与采购`
-- `台账与对账`
+- budgets-and-funds
+- reimbursement-and-procurement
+- ledgers-and-reconciliation
 
-### 软件与脚本
+### Software and Scripts
 Include:
 - code folders
 - script files
@@ -139,24 +163,13 @@ Include:
 - strategy files
 - local utilities
 
-Typical signals:
-- `README`
-- `package.json`
-- `pyproject.toml`
-- `.mq4`
-- `.mq5`
-- `.ex4`
-- `.py`
-- `.ipynb`
-- `portable`
-
 Suggested subcategories:
-- `代码项目`
-- `脚本片段`
-- `绿色软件`
-- `交易记录`
+- code-projects
+- script-snippets
+- portable-apps
+- trading-records
 
-### 图片与媒体
+### Images and Media
 Include:
 - photos
 - screenshots
@@ -165,12 +178,12 @@ Include:
 - exported charts
 
 Suggested subcategories:
-- `图片`
-- `视频`
-- `音频`
-- `图表导出`
+- images
+- videos
+- audio
+- chart-exports
 
-### 安装与压缩包
+### Installers and Archives
 Include:
 - installers
 - archives
@@ -178,11 +191,11 @@ Include:
 - download leftovers
 
 Suggested subcategories:
-- `安装包`
-- `压缩包`
-- `下载残留`
+- installers
+- archives
+- download-leftovers
 
-### 待人工复核
+### Manual Review
 Use for:
 - sensitive personal data
 - contracts
@@ -210,4 +223,4 @@ Lower priority:
 - `medium`: directory context is strong and sampled content partly supports it
 - `low`: classification depends mostly on weak names or incomplete extraction
 
-Do not perform final high-impact moves on `low` confidence items without routing them through `待人工复核`.
+Do not perform final high-impact moves on `low` confidence items without routing them through `manual-review`.
