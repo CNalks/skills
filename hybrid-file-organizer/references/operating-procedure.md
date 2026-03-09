@@ -8,6 +8,12 @@ If the user did not define it precisely:
 - call out risky inclusions and exclusions
 - get confirmation before broad scanning
 
+If the user did define a broad scope, do not silently replace it with a narrower execution subset.
+If you want to act on only one safer batch first:
+- say which broader scope was requested
+- say which exact batch you propose to apply now
+- get confirmation before renaming or moving anything in that batch
+
 ## 2. Stage design and tool selection
 Before selecting tools, define the stages of the job:
 - inventory
@@ -25,6 +31,13 @@ For each stage, decide in order:
 3. custom script
 
 Do not start with implementation. Start with the stage plan.
+
+Before the apply stage, define the destination strategy:
+- in-place reorganization
+- move into an existing result root
+- create a new result root
+
+If the strategy adds a new top-level directory or otherwise changes the visible layout of the scoped area, preview it and confirm it first.
 
 ## 3. Pre-scan
 Inventory candidate roots before any move:
@@ -77,6 +90,10 @@ Use the corresponding session skills when available:
 - `pdf`
 - `spreadsheet`
 
+Do not assign a semantic title that outruns the evidence.
+If a proposed Chinese rename adds subject matter, organization, course name, or project theme beyond what is already explicit in the source path, validate it with content sampling or strong folder context first.
+Filename-only renaming is acceptable only for high-confidence, low-sensitivity cases such as obvious media releases, software packages, or archive bundles whose topic is already explicit.
+
 ## 7. Classification
 Classify in this order:
 1. choose the level-1 category
@@ -122,6 +139,8 @@ Use `_1`, `_2` only after content-aware disambiguation fails.
 
 ## 10. High-risk confirmation gate
 Ask the user before applying high-risk operations:
+- executing only a subset from a broader confirmed scope
+- introducing a new result root or top-level destination bucket
 - large batch moves
 - duplicate merge or overwrite decisions
 - moving code projects or portable apps
@@ -162,12 +181,22 @@ Future extension notes:
 ## 14. Completion checklist
 Before closing a pass, verify:
 - the user-confirmed scope was respected
+- any narrower apply batch was explicitly confirmed
 - the stage plan was defined before selecting tools
+- the destination strategy was stated before the first move
+- any new top-level result root was previewed and confirmed
 - the scan roots were inventoried first
 - chat attachment folders were handled only if included in scope
 - cloud-synced roots were excluded unless explicitly included
 - shortcut targets were audited if desktop-like roots were included
+- semantic renames were supported by content evidence or strong folder context
 - renaming happened before the move
 - moved items have logs
 - unresolved items are in `manual-review`
 - root clutter in desktop-like or download-like roots is reduced without breaking shortcuts or installed software
+
+## 15. Reporting discipline
+Describe the run precisely:
+- say "inventory only" if no moves happened
+- say "pilot batch" or "preview batch" if only a small confirmed subset was applied
+- do not say the requested scope was "organized" when only one subset was handled
