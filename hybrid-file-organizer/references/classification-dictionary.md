@@ -19,6 +19,18 @@ Common high-priority user-file areas, when included by the user:
 Use path, size, and extension distribution to decide what to inspect.  
 Use file content, titles, headers, README files, and nearby context to decide the final category.
 
+## Naming evidence rule
+Category choice and filename choice do not have the same evidence threshold.
+
+- category may use medium evidence when the bucket is broad and low-risk
+- specific filename wording must use evidence that is at least as strong as the claim in the name
+- when evidence is weak, keep the filename generic rather than specific
+
+Examples:
+- acceptable with weak evidence: `AQF_压缩包`
+- acceptable with medium evidence: `AQF资料_压缩包`
+- requires strong evidence: `量化金融分析师AQF实训课程资料包`
+
 ## Special path-type strategy
 
 ### Desktop-like roots
