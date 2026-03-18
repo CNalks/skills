@@ -90,8 +90,13 @@ Use the corresponding session skills when available:
 - `pdf`
 - `spreadsheet`
 
+Use evidence grades when deciding naming strength:
+- weak: filename, extension, shallow path, file size
+- medium: parent-folder theme, neighboring files, archive file list, sender or export context
+- strong: sampled content, headings, headers, README, first-page text, sheet names
+
 Do not assign a semantic title that outruns the evidence.
-If a proposed Chinese rename adds subject matter, organization, course name, or project theme beyond what is already explicit in the source path, validate it with content sampling or strong folder context first.
+If a proposed Chinese rename adds subject matter, organization, course name, report type, or project theme beyond what is already explicit in the source path, validate it with strong evidence or at least medium evidence plus stable folder context first.
 Filename-only renaming is acceptable only for high-confidence, low-sensitivity cases such as obvious media releases, software packages, or archive bundles whose topic is already explicit.
 
 ## 7. Classification
@@ -129,6 +134,16 @@ Recommended fields:
 - phase
 - version
 
+Apply naming strength by evidence grade:
+- weak evidence -> generic and conservative names only
+- medium evidence -> allow subject plus type or date
+- strong evidence -> allow subject plus unit, phase, purpose, or report type
+
+Examples:
+- weak: `AQF_压缩包.rar`
+- medium: `AQF资料_压缩包.rar`
+- strong: `量化金融分析师AQF实训课程资料包.rar`
+
 Strip:
 - random download numbers
 - repeated brackets
@@ -136,6 +151,8 @@ Strip:
 - duplicated separators
 
 Use `_1`, `_2` only after content-aware disambiguation fails.
+If evidence is weak, prefer plain labels such as `资料`, `文档`, `表格`, `压缩包`, `安装包`, `视频`, `图片`.
+Do not promote a file into `课程`, `报告`, `方案`, `台账`, `项目`, `入职材料`, or a named organization unless the evidence supports that label.
 
 ## 10. High-risk confirmation gate
 Ask the user before applying high-risk operations:
