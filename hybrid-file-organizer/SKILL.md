@@ -107,9 +107,14 @@ Read only enough content to make a reliable decision:
 
 If `doc`, `pdf`, or `spreadsheet` skills are available in the session, use them for the content-reading step.
 
+Use naming strength that matches evidence strength:
+- weak evidence: filename, extension, shallow path, file size
+- medium evidence: parent-folder theme, neighboring files, archive listing, stable sender or export context
+- strong evidence: sampled content, headings, headers, README, table names, first-page text
+
 Do not invent a more specific semantic rename than the evidence supports.
-If a rename introduces a subject, unit, or theme that is not already obvious from strong folder context or sampled content, sample content first.
-Only use filename-only evidence for clearly non-sensitive, high-confidence cases such as obvious media series folders or disposable download-package names.
+If a rename introduces a subject, unit, course, project theme, or document purpose that is not already obvious from strong folder context or sampled content, sample content first.
+Only use filename-only evidence for clearly non-sensitive, high-confidence cases such as obvious media series folders, software packages, or disposable download-package names.
 
 ### Step 6: Classify with a fixed dictionary
 Use [references/classification-dictionary.md](references/classification-dictionary.md) as the source of truth.
@@ -137,6 +142,12 @@ Rename with these priorities:
 3. remove download noise, hashes, repeated brackets, and meaningless numbers
 4. prefer Chinese-friendly names when the user wants Chinese naming
 5. only add `_1`, `_2` after content-based disambiguation fails
+
+When evidence is weak, keep names conservative:
+- prefer `topic_类型`
+- prefer `topic_资料`
+- prefer `topic_压缩包`
+- avoid asserting a course, report type, project, or organization unless evidence supports it
 
 ### Step 8: Move and log
 Move only after classification and renaming are set.
