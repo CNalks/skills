@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Designer"
+  short_description: "负责产品目标、用户体验、信息架构、视觉语言与设计系统决策"
+  default_prompt: "使用 $product-designer 把这个需求整理为可交付的产品与设计方案。"
