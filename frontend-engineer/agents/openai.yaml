@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Engineer"
+  short_description: "负责组件架构、数据流、性能、可访问性与前端工程质量"
+  default_prompt: "使用 $frontend-engineer 将这份设计方案实现为可维护的前端工程。"
