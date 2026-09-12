@@ -19,8 +19,13 @@ Canonical repository for reusable Codex/OpenAI skills maintained by CNalks.
 
 ## Repository consolidation
 
-On 2026-09-10, `frontend-engineer/` and `product-designer/` were migrated byte-for-byte from `CNalks/product-design-frontend-skills` into this canonical repository. Their Git subtree SHAs were preserved during migration.
+On 2026-09-10, `frontend-engineer/` and `product-designer/` were copied byte-for-byte from `CNalks/product-design-frontend-skills` into this canonical repository. The imported directory tree object IDs were preserved:
 
-Source repository: `CNalks/product-design-frontend-skills`
+- `frontend-engineer`: `7bb1da73657d1a28b9a89a49572fb4f430876f23`
+- `product-designer`: `8800eb024aa839f1e48b775e563e6fd07f5a7d6c`
+
+This verifies file-tree identity at consolidation time; it does not import the source repository's commit graph.
+
+Former source repository: `CNalks/product-design-frontend-skills` (deleted after the tree-level verification above).
 
 After this consolidation, new development for these skills should occur here rather than in the source repository.
